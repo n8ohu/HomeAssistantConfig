@@ -1,0 +1,1285 @@
+kiosk_mode:
+  non_admin_settings:
+    kiosk: true
+    ignore_entity_settings: true
+  entity_settings:
+    - entity:
+        input_boolean.kiosk_mode: 'on'
+      hide_header: true
+    - entity:
+        input_boolean.kiosk_mode: 'off'
+      hide_header: false
+views:
+  - theme: Backend-selected
+    title: Battery Pack 1
+    icon: mdi:battery
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 33% auto 33%
+      grid-template-rows: auto
+      grid-template-areas: |
+        "header header header"
+        ". messages ."
+        "left middle right"
+        "footer footer footer"
+      mediaquery:
+        '(max-width: 390px)':
+          grid-template-columns: 100%
+          grid-template-areas: |
+            "header"
+            "messages"
+            "middle"
+            "left"
+            "right"
+            "footermobile"
+        '(max-width: 800px)':
+          grid-template-columns: 50% 50%
+          grid-template-areas: |
+            "header header"
+            "messages messages"
+            "middle middle"
+            "left right"
+            "footer footer"
+    badges: []
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: custom:state-switch
+            entity: group
+            states:
+              admin:
+                type: custom:mushroom-chips-card
+                chips:
+                  - type: menu
+                  - type: action
+                    icon_color: light-green
+                    icon: mdi:arrow-expand-vertical
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      data: {}
+                      target:
+                        entity_id: input_boolean.kiosk_mode
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: action
+                tap_action:
+                  action: navigate
+                  navigation_path: /power-monitoring/
+                icon: mdi:home
+              - type: action
+                icon: mdi:arrow-right
+                tap_action:
+                  action: navigate
+                  navigation_path: /power-monitoring/battery-pack-2
+        view_layout:
+          grid-area: header
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            card_mod:
+              class: header
+            content: '# Battery Cell 1 through 8 '
+          - square: false
+            columns: 2
+            type: grid
+            cards:
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 1
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                min: 0
+                unit: Volts
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 2
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                min: 0
+                unit: Volts
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                max: 5
+                min: 0
+                unit: Volts
+                name: Cell 3
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 4
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 5
+                unit: Volts
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                min: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 6
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 7
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 8
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+          - type: markdown
+            card_mod:
+              class: footer
+            content: '# &nbsp; '
+        view_layout:
+          grid-area: left
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            content: '# Pack One Overall State '
+            card_mod:
+              class: header
+          - type: gauge
+            entity: sensor.openwrt_router_kib_s_received
+            name: Battery Pack Voltage
+            unit: Volts
+            min: 40
+            max: 60
+            needle: true
+            card_mod:
+              class: middle
+          - type: gauge
+            entity: sensor.openwrt_router_kib_s_sent
+            name: BMS Temperature
+            needle: true
+            card_mod:
+              class: middle
+          - type: gauge
+            entity: sensor.moto_z4_battery_power
+            name: Battery Pack Current
+            unit: Amps
+            needle: true
+            max: 200
+            min: -200
+            card_mod:
+              class: middle
+          - type: custom:dual-gauge-card
+            title: Battery
+            min: -20
+            max: 40
+            outer:
+              entity: sensor.moto_z4_battery_temperature
+              attribute: current_temperature
+              label: Current
+              unit: °C
+            inner:
+              entity: sensor.moto_z4_battery_temperature
+              label: Target
+              attribute: temperature
+              unit: °C
+            colors:
+              - color: var(--label-badge-red)
+                value: 27.5
+              - color: var(--label-badge-green)
+                value: 25
+              - color: var(--label-badge-yellow)
+                value: 18
+              - color: var(--label-badge-blue)
+                value: 0
+              - color: var(--paper-blue-400)
+                value: -40
+            card_mod:
+              class: middle
+          - type: markdown
+            card_mod:
+              class: footer
+            content: '# &nbsp; '
+        view_layout:
+          grid-area: middle
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            card_mod:
+              class: header
+            content: '# Battery Cell 9 though 16 '
+          - square: false
+            columns: 2
+            type: grid
+            cards:
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 9
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 10
+                unit: Volts
+                min: 0
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                max: 5
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 11
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 12
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 13
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 14
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                min: 0
+                max: 5
+                name: Cell 15
+                unit: Volts
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 16
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+          - type: markdown
+            card_mod:
+              class: footer
+            content: '# &nbsp; '
+        view_layout:
+          grid-area: right
+  - theme: Backend-selected
+    title: Battery Pack 2
+    path: battery-pack-2
+    icon: mdi:battery
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 33% auto 33%
+      grid-template-rows: auto
+      grid-template-areas: |
+        "header header header"
+        ". messages ."
+        "left middle right"
+        "footer footer footer"
+      mediaquery:
+        '(max-width: 390px)':
+          grid-template-columns: 100%
+          grid-template-areas: |
+            "header"
+            "messages"
+            "middle"
+            "left"
+            "right"
+            "footermobile"
+        '(max-width: 800px)':
+          grid-template-columns: 50% 50%
+          grid-template-areas: |
+            "header header"
+            "messages messages"
+            "middle middle"
+            "left right"
+            "footer footer"
+    badges: []
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: action
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: /power-monitoring
+          - type: action
+            icon: mdi:arrow-left
+            tap_action:
+              action: navigate
+              navigation_path: /power-monitoring/0
+          - type: action
+            tap_action:
+              action: navigate
+              navigation_path: /power-monitoring/battery-pack-3
+            icon: mdi:arrow-right
+        view_layout:
+          grid-area: header
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            card_mod:
+              class: header
+            content: '# Battery Cell 1 through 8 '
+          - square: false
+            columns: 2
+            type: grid
+            cards:
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 1
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                min: 0
+                unit: Volts
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 2
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                min: 0
+                unit: Volts
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                max: 5
+                min: 0
+                unit: Volts
+                name: Cell 3
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 4
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 5
+                unit: Volts
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                min: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 6
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 7
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 8
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+          - type: markdown
+            card_mod:
+              class: footer
+            content: '# &nbsp; '
+        view_layout:
+          grid-area: left
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            content: '# Pack Two Overall State '
+            card_mod:
+              class: header
+          - type: gauge
+            entity: sensor.openwrt_router_kib_s_received
+            name: Battery Pack Voltage
+            unit: Volts
+            min: 40
+            max: 60
+            needle: true
+            card_mod:
+              class: middle
+          - type: gauge
+            entity: sensor.openwrt_router_kib_s_sent
+            name: BMS Temperature
+            needle: true
+            card_mod:
+              class: middle
+          - type: gauge
+            entity: sensor.moto_z4_battery_power
+            name: Battery Pack Current
+            unit: Amps
+            needle: true
+            max: 200
+            min: -200
+            card_mod:
+              class: middle
+          - type: custom:dual-gauge-card
+            title: Battery
+            min: -20
+            max: 40
+            outer:
+              entity: sensor.moto_z4_battery_temperature
+              attribute: current_temperature
+              label: Current
+              unit: °C
+            inner:
+              entity: sensor.moto_z4_battery_temperature
+              label: Target
+              attribute: temperature
+              unit: °C
+            colors:
+              - color: var(--label-badge-red)
+                value: 27.5
+              - color: var(--label-badge-green)
+                value: 25
+              - color: var(--label-badge-yellow)
+                value: 18
+              - color: var(--label-badge-blue)
+                value: 0
+              - color: var(--paper-blue-400)
+                value: -40
+            card_mod:
+              class: middle
+          - type: markdown
+            card_mod:
+              class: footer
+            content: '# &nbsp; '
+        view_layout:
+          grid-area: middle
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            card_mod:
+              class: header
+            content: '# Battery Cell 9 though 16 '
+          - square: false
+            columns: 2
+            type: grid
+            cards:
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 9
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 10
+                unit: Volts
+                min: 0
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                max: 5
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 11
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 12
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 13
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 14
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                min: 0
+                max: 5
+                name: Cell 15
+                unit: Volts
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 16
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+          - type: markdown
+            card_mod:
+              class: footer
+            content: '# &nbsp; '
+        view_layout:
+          grid-area: right
+  - theme: Backend-selected
+    title: Battery Pack 3
+    path: battery-pack-3
+    icon: mdi:battery
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 33% auto 33%
+      grid-template-rows: auto
+      grid-template-areas: |
+        "header header header"
+        ". messages ."
+        "left middle right"
+        "footer footer footer"
+      mediaquery:
+        '(max-width: 390px)':
+          grid-template-columns: 100%
+          grid-template-areas: |
+            "header"
+            "messages"
+            "middle"
+            "left"
+            "right"
+            "footermobile"
+        '(max-width: 800px)':
+          grid-template-columns: 50% 50%
+          grid-template-areas: |
+            "header header"
+            "messages messages"
+            "middle middle"
+            "left right"
+            "footer footer"
+    badges: []
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: action
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: /power-monitoring
+          - type: action
+            icon: mdi:arrow-left
+            tap_action:
+              action: navigate
+              navigation_path: /power-monitoring/battery-pack-2
+          - type: action
+            tap_action:
+              action: navigate
+              navigation_path: /power-monitoring/inverters
+            icon: mdi:arrow-right
+        view_layout:
+          grid-area: header
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            card_mod:
+              class: header
+            content: '# Battery Cell 1 through 8 '
+          - square: false
+            columns: 2
+            type: grid
+            cards:
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 1
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                min: 0
+                unit: Volts
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 2
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                min: 0
+                unit: Volts
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                max: 5
+                min: 0
+                unit: Volts
+                name: Cell 3
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 4
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 5
+                unit: Volts
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                min: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 6
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 7
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 8
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+          - type: markdown
+            card_mod:
+              class: footer
+            content: '# &nbsp; '
+        view_layout:
+          grid-area: left
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            content: '# Pack Three Overall State '
+            card_mod:
+              class: header
+          - type: gauge
+            entity: sensor.openwrt_router_kib_s_received
+            name: Battery Pack Voltage
+            unit: Volts
+            min: 40
+            max: 60
+            needle: true
+            card_mod:
+              class: middle
+          - type: gauge
+            entity: sensor.openwrt_router_kib_s_sent
+            name: BMS Temperature
+            needle: true
+            card_mod:
+              class: middle
+          - type: gauge
+            entity: sensor.moto_z4_battery_power
+            name: Battery Pack Current
+            unit: Amps
+            needle: true
+            max: 200
+            min: -200
+            card_mod:
+              class: middle
+          - type: custom:dual-gauge-card
+            title: Battery
+            min: -20
+            max: 40
+            outer:
+              entity: sensor.moto_z4_battery_temperature
+              attribute: current_temperature
+              label: Current
+              unit: °C
+            inner:
+              entity: sensor.moto_z4_battery_temperature
+              label: Target
+              attribute: temperature
+              unit: °C
+            colors:
+              - color: var(--label-badge-red)
+                value: 27.5
+              - color: var(--label-badge-green)
+                value: 25
+              - color: var(--label-badge-yellow)
+                value: 18
+              - color: var(--label-badge-blue)
+                value: 0
+              - color: var(--paper-blue-400)
+                value: -40
+            card_mod:
+              class: middle
+          - type: markdown
+            card_mod:
+              class: footer
+            content: '# &nbsp; '
+        view_layout:
+          grid-area: middle
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            card_mod:
+              class: header
+            content: '# Battery Cell 9 though 16 '
+          - square: false
+            columns: 2
+            type: grid
+            cards:
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 9
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 10
+                unit: Volts
+                min: 0
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                max: 5
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 11
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 12
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 13
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 14
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                min: 0
+                max: 5
+                name: Cell 15
+                unit: Volts
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+              - type: gauge
+                entity: sensor.watchman_missing_services
+                name: Cell 16
+                unit: Volts
+                min: 0
+                max: 5
+                needle: true
+                severity:
+                  green: 3
+                  yellow: 2
+                  red: 0
+                card_mod:
+                  class: button-small
+          - type: markdown
+            card_mod:
+              class: footer
+            content: '# &nbsp; '
+        view_layout:
+          grid-area: right
+  - theme: Backend-selected
+    title: Inverters
+    path: inverters
+    icon: mdi:lightning-bolt-circle
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 33% auto 33%
+      grid-template-rows: auto
+      grid-template-areas: |
+        "header header header"
+        ". messages ."
+        "left middle right"
+        "footer footer footer"
+      mediaquery:
+        '(max-width: 390px)':
+          grid-template-columns: 100%
+          grid-template-areas: |
+            "header"
+            "messages"
+            "left"
+            "middle"
+            "right"
+            "footermobile"
+        '(max-width: 800px)':
+          grid-template-columns: 50% 50%
+          grid-template-areas: |
+            "header header"
+            "messages messages"
+            "left left"
+            "middle middle"
+            "right right"
+            "footer footer"
+    badges: []
+    cards:
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            content: '**Inverter 1**'
+          - type: gauge
+            entity: sensor.moto_z4_high_accuracy_update_interval
+          - square: false
+            columns: 3
+            type: grid
+            cards:
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_power
+              - type: gauge
+                entity: sensor.moto_z4_battery_power
+              - type: gauge
+                entity: sensor.moto_z4_battery_power
+        view_layout:
+          grid-area: left
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            content: '**Inverter 2**'
+          - type: gauge
+            entity: sensor.xt1710_02_battery_level
+          - square: false
+            columns: 3
+            type: grid
+            cards:
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_power
+              - type: gauge
+                entity: sensor.moto_z4_battery_power
+              - type: gauge
+                entity: sensor.moto_z4_battery_power
+        view_layout:
+          grid-area: middle
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: markdown
+            content: '**Inverter 3**'
+          - type: gauge
+            entity: sensor.xt1710_02_battery_temperature
+          - square: false
+            columns: 3
+            type: grid
+            cards:
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_temperature
+              - type: gauge
+                entity: sensor.moto_z4_battery_power
+              - type: gauge
+                entity: sensor.moto_z4_battery_power
+              - type: gauge
+                entity: sensor.moto_z4_battery_power
+        view_layout:
+          grid-area: right
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: action
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: /power-monitoring
+          - type: action
+            icon: mdi:arrow-left
+            tap_action:
+              action: navigate
+              navigation_path: /power-monitoring/battery-pack-3
+        view_layout:
+          grid-area: header
+  - theme: Backend-selected
+    title: Statistics
+    path: statistics
+    icon: mdi:graph
+    badges: []
+    cards:
+      - chart_type: bar
+        period: hour
+        days_to_show: 30
+        type: statistics-graph
+        entities:
+          - sensor.moto_z4_battery_level
+        stat_types:
+          - mean
+          - min
+          - max
